@@ -1,0 +1,22 @@
+{
+  "name": "recruitment-portal-backend",
+  "version": "1.0.0",
+  "description": "Backend for Recruitment Portal",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "@azure/msal-browser": "^4.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

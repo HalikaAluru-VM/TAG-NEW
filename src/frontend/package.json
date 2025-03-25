@@ -1,0 +1,48 @@
+{
+  "name": "recruitment-portal-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Recruitment Portal",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "npx nodemon --exec cross-env PORT=3000 BROWSER=none REACT_APP_BACKEND_PORT=8000 react-scripts start",
+    "build": "react-scripts build",
+    "serve": "npx serve -s build"
+  },
+  "dependencies": {
+    "@azure/msal-browser": "^4.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.11.2",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
+    "@babel/preset-react": "^7.26.3",
+    "babel-loader": "^10.0.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^7.1.2",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "nodemon": "^3.0.1",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
