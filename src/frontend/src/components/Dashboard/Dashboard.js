@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./Dashboard.css";
 
@@ -98,6 +98,22 @@ const FilterContainer = () => {
       )}
 
       <button onClick={applyFilter}>Apply Filter</button>
+    </div>
+  );
+};
+
+// Chart Component
+const Chart = ({ title, canvasId, hidden }) => {
+  useEffect(() => {
+    // Initialize chart logic here if needed
+  }, []);
+
+  return (
+    <div className={`dashboard-chart ${hidden ? "hidden" : ""}`}>
+      <h3>{title}</h3>
+      <div className="chart-containers">
+        <canvas id={canvasId} style={{ maxHeight: "148px" }}></canvas>
+      </div>
     </div>
   );
 };
@@ -251,6 +267,26 @@ const DashboardContent = () => {
         <Card id="imochaInviteCard" count="Loading..." label="Imocha Invite" />
         <Card id="imochaCompletedCard" count="Loading..." label="Imocha Completed" />
       </div>
+
+      <div className="dashboard-charts">
+        <Chart title="EC Overview" canvasId="departmentChart" />
+        <Chart title="Applicants per EC" canvasId="departmentRoleChart" />
+      </div>
+
+      <div className="dashboard-charts">
+        <Chart title="Cloud EC Overview" canvasId="statusChart" hidden />
+        <Chart title="Cloud EC Job Roles" canvasId="roleChart" hidden />
+      </div>
+
+      <div className="dashboard-charts">
+        <Chart title="App EC Overview" canvasId="newStatusChart" hidden />
+        <Chart title="App EC Job Roles" canvasId="newRoleChart" hidden />
+      </div>
+
+      <div className="dashboard-charts">
+        <Chart title="Data EC Overview" canvasId="secondStatusChart" hidden />
+        <Chart title="Data EC Job Roles" canvasId="secondRoleChart" hidden />
+      </div>
     </div>
   );
 };
@@ -272,7 +308,6 @@ const Dashboard = () => {
       </button>
       <Sidebar onNavigate={handleNavigate} />
       <FilterContainer />
-      
       <DashboardContent />
     </div>
   );
