@@ -18,7 +18,7 @@ const findByEmail = async (email) => {
 
   console.time("Database Query Time");
   const result = await pool.query(
-    "SELECT ec_mapping, status FROM admin_table WHERE email = $1",
+    "SELECT ec_mapping, status FROM admin_table WHERE email ILIKE $1",
     [email]
   );
   console.timeEnd("Database Query Time");
