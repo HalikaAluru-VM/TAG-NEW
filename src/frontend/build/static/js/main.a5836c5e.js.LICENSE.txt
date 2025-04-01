@@ -1,6 +1,15 @@
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
+ */
+
 /*! @azure/msal-browser v4.7.0 2025-03-11 */
 
 /*! @azure/msal-common v15.2.1 2025-03-11 */
+
+/*! https://mths.be/punycode v1.3.2 by @mathias */
 
 /**
  * @license React

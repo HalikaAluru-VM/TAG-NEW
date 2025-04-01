@@ -72,7 +72,7 @@ const EcSelection = () => {
         </div>
         <div
           className="card"
-          onClick={() => navigateTo("apprecruit.html", "App EC")}
+          onClick={() => navigateTo("app-recruit", "App EC")}
         >
           <i className="fas fa-cogs card-icon"></i>
           <div className="card-title">App EC</div>
