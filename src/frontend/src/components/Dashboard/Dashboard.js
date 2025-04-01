@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./Dashboard.css";
@@ -271,6 +272,238 @@ const PopupModal = ({ isVisible, title, tableId, onClose, children, showFilters,
   );
 };
 
+// RightPanel Component
+const RightPanel = () => {
+  const [rrfCount, setRrfCount] = useState(0);
+  const [imochaResults, setImochaResults] = useState({
+    total: 1,
+    app: 0,
+    cloud: 0,
+    data: 0
+  });
+  const [candidateStatus, setCandidateStatus] = useState([
+    { name: "Resume Screening", progress: 0, type: "Evaluation" },
+    { name: "L1 Imocha(online)", progress: 10, type: "Engagement" },
+    { name: "L2 Interview", progress: 30, type: "Relationship" },
+    { name: "Fitment Round", progress: 0, type: "Selection" }
+  ]);
+
+  return (
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "20px",
+      padding: "10px",
+      width: "300px"
+    }}>
+      {/* Total RRF Count */}
+      <div style={{
+        backgroundColor: "white",
+        borderRadius: "8px",
+        padding: "15px",
+        cursor: "pointer",
+        boxShadow: "0 2px 5px rgba(0,0,0,0.1)"
+      }}>
+        <div style={{ color: "black", marginBottom: "10px", fontWeight: "bold" }}>Total RRF Count</div>
+        <div style={{
+          position: "relative",
+          width: "150px",
+          height: "150px",
+          margin: "0 auto"
+        }}>
+          <div style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            border: "10px solid #e0e0e0",
+            clipPath: "circle(50% at 50% 50%)"
+          }}></div>
+          <div style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            textAlign: "center"
+          }}>
+            <p style={{ fontSize: "24px", fontWeight: "bold", margin: 0 }}>{rrfCount}</p>
+            <span style={{ fontSize: "12px" }}>Total Applicants</span>
+          </div>
+        </div>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "10px",
+          marginTop: "15px"
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <div style={{
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              backgroundColor: "#FF6384"
+            }}></div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>0</span>
+              <span style={{ fontSize: "12px", marginLeft: "5px" }}>App</span>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <div style={{
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              backgroundColor: "#36A2EB"
+            }}></div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>0</span>
+              <span style={{ fontSize: "12px", marginLeft: "5px" }}>Cloud</span>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <div style={{
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              backgroundColor: "#FFCE56"
+            }}></div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>0</span>
+              <span style={{ fontSize: "12px", marginLeft: "5px" }}>Data</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* L1 iMocha Results */}
+      <div style={{
+        backgroundColor: "white",
+        borderRadius: "8px",
+        padding: "15px",
+        cursor: "pointer",
+        boxShadow: "0 2px 5px rgba(0,0,0,0.1)"
+      }}>
+        <div style={{ color: "black", marginBottom: "10px", fontWeight: "bold" }}>L1 iMocha Results</div>
+        <div style={{
+          position: "relative",
+          width: "150px",
+          height: "150px",
+          margin: "0 auto"
+        }}>
+          <div style={{
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            borderRadius: "50%",
+            border: "10px solid #e0e0e0",
+            clipPath: "circle(50% at 50% 50%)"
+          }}></div>
+          <div style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            textAlign: "center"
+          }}>
+            <p style={{ fontSize: "24px", fontWeight: "bold", margin: 0 }}>{imochaResults.total}</p>
+            <span style={{ fontSize: "12px" }}>Total Applicants</span>
+          </div>
+        </div>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: "10px",
+          marginTop: "15px"
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <div style={{
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              backgroundColor: "#FF6384"
+            }}></div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>{imochaResults.app}</span>
+              <span style={{ fontSize: "12px", marginLeft: "5px" }}>App</span>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <div style={{
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              backgroundColor: "#36A2EB"
+            }}></div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>{imochaResults.cloud}</span>
+              <span style={{ fontSize: "12px", marginLeft: "5px" }}>Cloud</span>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <div style={{
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              backgroundColor: "#FFCE56"
+            }}></div>
+            <div>
+              <span style={{ fontWeight: "bold" }}>{imochaResults.data}</span>
+              <span style={{ fontSize: "12px", marginLeft: "5px" }}>Data</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Candidates Status */}
+      <div style={{
+        backgroundColor: "white",
+        borderRadius: "8px",
+        padding: "15px",
+        boxShadow: "0 2px 5px rgba(0,0,0,0.1)"
+      }}>
+        <header style={{ textAlign: "center", width: "100%", marginBottom: "10px" }}>
+          <h1 style={{ fontSize: "18px", margin: 0 }}>Candidates Status</h1>
+        </header>
+        <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
+          {candidateStatus.map((status, index) => (
+            <div key={index} style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px"
+            }}>
+              <div style={{
+                position: "relative",
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: `conic-gradient(#4CAF50 ${status.progress}%, #e0e0e0 ${status.progress}% 100%)`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}>
+                <div style={{
+                  position: "absolute",
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "50%",
+                  backgroundColor: "white"
+                }}></div>
+                <span style={{ fontSize: "10px", zIndex: 1 }}>{status.progress}%</span>
+              </div>
+              <div>
+                <h2 style={{ fontSize: "14px", margin: 0 }}>{status.name}</h2>
+                <div style={{ display: "flex", gap: "5px", fontSize: "12px" }}>
+                  <span>{status.type}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Dashboard Content Component
 const DashboardContent = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -309,225 +542,229 @@ const DashboardContent = () => {
   }, []);
 
   return (
-    <div id="content">
-      <div className="dashboard-container">
-        <Card
-          id="card"
-          count={uploadCount}
-          label="Applications"
-          onClick={() => {
-            setIsPopupVisible(true);
-            setLoading(true);
-            setTimeout(() => setLoading(false), 1000);
-          }}
-        />
-        <PopupModal
-          isVisible={isPopupVisible}
-          title="Candidate Applications"
-          tableId="applicationsTable"
-          onClose={handlePopupClose}
-          showFilters={true}
-          loading={loading}
-        >
-          <thead style={{ backgroundColor: "#f4f4f4" }}>
-            <tr>
-              <th>RRF ID</th>
-              <th>Candidate Name</th>
-              <th>Candidate Email</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Dynamically loaded data will be inserted here */}
-          </tbody>
-        </PopupModal>
+    <div id="content" style={{ display: "flex" }}>
+      <div style={{ flex: 1 }}>
+        <div className="dashboard-container">
+          <Card
+            id="card"
+            count={uploadCount}
+            label="Applications"
+            onClick={() => {
+              setIsPopupVisible(true);
+              setLoading(true);
+              setTimeout(() => setLoading(false), 1000);
+            }}
+          />
+          <PopupModal
+            isVisible={isPopupVisible}
+            title="Candidate Applications"
+            tableId="applicationsTable"
+            onClose={handlePopupClose}
+            showFilters={true}
+            loading={loading}
+          >
+            <thead style={{ backgroundColor: "#f4f4f4" }}>
+              <tr>
+                <th>RRF ID</th>
+                <th>Candidate Name</th>
+                <th>Candidate Email</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Dynamically loaded data will be inserted here */}
+            </tbody>
+          </PopupModal>
 
-        <Card
-          id="shortlistedCard"
-          count={shortlistedCount}
-          label="Shortlisted"
-          onClick={() => {
-            setIsShortlistedPopupVisible(true);
-            setLoading(true);
-            setTimeout(() => setLoading(false), 1000);
-          }}
-        />
-        <PopupModal
-          isVisible={isShortlistedPopupVisible}
-          title="Shortlisted Candidates"
-          tableId="shortlistedTable"
-          onClose={handleShortlistedPopupClose}
-          showFilters={true}
-          loading={loading}
-        >
-          <thead style={{ backgroundColor: "#f4f4f4" }}>
-            <tr>
-              <th>RRF ID</th>
-              <th>Candidate Name</th>
-              <th>Candidate Email</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Dynamically loaded data will be inserted here */}
-          </tbody>
-        </PopupModal>
+          <Card
+            id="shortlistedCard"
+            count={shortlistedCount}
+            label="Shortlisted"
+            onClick={() => {
+              setIsShortlistedPopupVisible(true);
+              setLoading(true);
+              setTimeout(() => setLoading(false), 1000);
+            }}
+          />
+          <PopupModal
+            isVisible={isShortlistedPopupVisible}
+            title="Shortlisted Candidates"
+            tableId="shortlistedTable"
+            onClose={handleShortlistedPopupClose}
+            showFilters={true}
+            loading={loading}
+          >
+            <thead style={{ backgroundColor: "#f4f4f4" }}>
+              <tr>
+                <th>RRF ID</th>
+                <th>Candidate Name</th>
+                <th>Candidate Email</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Dynamically loaded data will be inserted here */}
+            </tbody>
+          </PopupModal>
 
-        <Card
-          id="rejectedCard"
-          count={rejectedCount}
-          label="Rejected"
-          onClick={() => {
-            setIsRejectedPopupVisible(true);
-            setLoading(true);
-            setTimeout(() => setLoading(false), 1000);
-          }}
-        />
-        <PopupModal
-          isVisible={isRejectedPopupVisible}
-          title="Rejected Candidates"
-          tableId="rejectedTable"
-          onClose={handleRejectedPopupClose}
-          showFilters={true}
-          loading={loading}
-        >
-          <thead style={{ backgroundColor: "#f4f4f4" }}>
-            <tr>
-              <th>RRF ID</th>
-              <th>Candidate Name</th>
-              <th>Candidate Email</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Dynamically loaded data will be inserted here */}
-          </tbody>
-        </PopupModal>
+          <Card
+            id="rejectedCard"
+            count={rejectedCount}
+            label="Rejected"
+            onClick={() => {
+              setIsRejectedPopupVisible(true);
+              setLoading(true);
+              setTimeout(() => setLoading(false), 1000);
+            }}
+          />
+          <PopupModal
+            isVisible={isRejectedPopupVisible}
+            title="Rejected Candidates"
+            tableId="rejectedTable"
+            onClose={handleRejectedPopupClose}
+            showFilters={true}
+            loading={loading}
+          >
+            <thead style={{ backgroundColor: "#f4f4f4" }}>
+              <tr>
+                <th>RRF ID</th>
+                <th>Candidate Name</th>
+                <th>Candidate Email</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {/* Dynamically loaded data will be inserted here */}
+            </tbody>
+          </PopupModal>
 
-        <Card id="imochaInviteCard" count="Loading..." label="Imocha Invite" />
-        <Card id="imochaCompletedCard" count="Loading..." label="Imocha Completed" />
-      </div>
-
-      {/* HR Selection Chart */}
-      <div className="hrcardnew">
-        <div className="hrcard">
-          <h3 style={{ color: "black", marginTop: "5px" }}>HR Selection Details</h3>
-          <canvas id="hrChart"></canvas>
+          <Card id="imochaInviteCard" count="Loading..." label="Imocha Invite" />
+          <Card id="imochaCompletedCard" count="Loading..." label="Imocha Completed" />
         </div>
-      </div>
 
-      {/* Role-based Cards */}
-      <h4 style={{ color: "black", paddingLeft: "200px" }}>By Role</h4>
-      <div className="wrapper">
-        <div className="containerss">
-          <div className="grid">
-            <RoleCard 
-              title="DevOps" 
-              icon="software" 
-              tag1="Full-time" 
-              tag2="Remote" 
-              applicantsCount={roleCounts.devops} 
-            />
-            <RoleCard 
-              title="Platform" 
-              icon="design" 
-              tag1="Part-time" 
-              tag2="Hybrid" 
-              applicantsCount={roleCounts.platform} 
-            />
-            <RoleCard 
-              title="Migration" 
-              icon="sales" 
-              tag1="Full-time" 
-              tag2="On-site" 
-              applicantsCount={roleCounts.site} 
-            />
-            <RoleCard 
-              title="CloudOps" 
-              icon="hr" 
-              tag1="Contract" 
-              tag2="Remote" 
-              applicantsCount={roleCounts.cloudops} 
-            />
-            <RoleCard 
-              title="Data Engineer" 
-              icon="database" 
-              tag1="Full-time" 
-              tag2="Remote" 
-              applicantsCount={roleCounts.dataEngineer} 
-            />
-            <RoleCard 
-              title="Data – BI Visualization Engineer" 
-              icon="chart" 
-              tag1="Part-time" 
-              tag2="Hybrid" 
-              applicantsCount={roleCounts.biVisualization} 
-            />
-            <RoleCard 
-              title="Data Analyst" 
-              icon="analysis" 
-              tag1="Full-time" 
-              tag2="On-site" 
-              applicantsCount={roleCounts.dataAnalyst} 
-            />
-            <RoleCard 
-              title="Data Modeller" 
-              icon="model" 
-              tag1="Contract" 
-              tag2="Remote" 
-              applicantsCount={roleCounts.dataModeller} 
-            />
-            <RoleCard 
-              title="Cloud Native Application Engineer - Backend" 
-              icon="backend" 
-              tag1="Full-time" 
-              tag2="Remote" 
-              applicantsCount={roleCounts.cloudNativeBackend} 
-            />
-            <RoleCard 
-              title="Cloud Native Application Engineer - Frontend" 
-              icon="frontend" 
-              tag1="Full-time" 
-              tag2="Remote" 
-              applicantsCount={roleCounts.cloudNativeFrontend} 
-            />
-            <RoleCard 
-              title="LCNC Platform Engineer" 
-              icon="lcnc" 
-              tag1="Contract" 
-              tag2="Hybrid" 
-              applicantsCount={roleCounts.lcncPlatformEngineer} 
-            />
-            <RoleCard 
-              title="Integration Engineer" 
-              icon="integration" 
-              tag1="Full-time" 
-              tag2="Remote" 
-              applicantsCount={roleCounts.integrationEngineer} 
-            />
+        {/* HR Selection Details */}
+        <div className="hrcardnew">
+          <div className="hrcard">
+            <h3 style={{ color: "black", marginTop: "5px" }}>HR Selection Details</h3>
+            <canvas id="hrChart"></canvas>
           </div>
         </div>
+
+        {/* By Role Section */}
+        <h4 style={{ color: "black", paddingLeft: "200px" }}>By Role</h4>
+        <div className="wrapper">
+          <div className="containerss">
+            <div className="grid">
+              <RoleCard 
+                title="DevOps" 
+                icon="software" 
+                tag1="Full-time" 
+                tag2="Remote" 
+                applicantsCount={roleCounts.devops} 
+              />
+              <RoleCard 
+                title="Platform" 
+                icon="design" 
+                tag1="Part-time" 
+                tag2="Hybrid" 
+                applicantsCount={roleCounts.platform} 
+              />
+              <RoleCard 
+                title="Migration" 
+                icon="sales" 
+                tag1="Full-time" 
+                tag2="On-site" 
+                applicantsCount={roleCounts.site} 
+              />
+              <RoleCard 
+                title="CloudOps" 
+                icon="hr" 
+                tag1="Contract" 
+                tag2="Remote" 
+                applicantsCount={roleCounts.cloudops} 
+              />
+              <RoleCard 
+                title="Data Engineer" 
+                icon="database" 
+                tag1="Full-time" 
+                tag2="Remote" 
+                applicantsCount={roleCounts.dataEngineer} 
+              />
+              <RoleCard 
+                title="Data – BI Visualization Engineer" 
+                icon="chart" 
+                tag1="Part-time" 
+                tag2="Hybrid" 
+                applicantsCount={roleCounts.biVisualization} 
+              />
+              <RoleCard 
+                title="Data Analyst" 
+                icon="analysis" 
+                tag1="Full-time" 
+                tag2="On-site" 
+                applicantsCount={roleCounts.dataAnalyst} 
+              />
+              <RoleCard 
+                title="Data Modeller" 
+                icon="model" 
+                tag1="Contract" 
+                tag2="Remote" 
+                applicantsCount={roleCounts.dataModeller} 
+              />
+              <RoleCard 
+                title="Cloud Native Application Engineer - Backend" 
+                icon="backend" 
+                tag1="Full-time" 
+                tag2="Remote" 
+                applicantsCount={roleCounts.cloudNativeBackend} 
+              />
+              <RoleCard 
+                title="Cloud Native Application Engineer - Frontend" 
+                icon="frontend" 
+                tag1="Full-time" 
+                tag2="Remote" 
+                applicantsCount={roleCounts.cloudNativeFrontend} 
+              />
+              <RoleCard 
+                title="LCNC Platform Engineer" 
+                icon="lcnc" 
+                tag1="Contract" 
+                tag2="Hybrid" 
+                applicantsCount={roleCounts.lcncPlatformEngineer} 
+              />
+              <RoleCard 
+                title="Integration Engineer" 
+                icon="integration" 
+                tag1="Full-time" 
+                tag2="Remote" 
+                applicantsCount={roleCounts.integrationEngineer} 
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="dashboard-charts">
+          <Chart title="EC Overview" canvasId="departmentChart" />
+          <Chart title="Applicants per EC" canvasId="departmentRoleChart" />
+        </div>
+
+        <div className="dashboard-charts">
+          <Chart title="Cloud EC Overview" canvasId="statusChart" hidden />
+          <Chart title="Cloud EC Job Roles" canvasId="roleChart" hidden />
+        </div>
+
+        <div className="dashboard-charts">
+          <Chart title="App EC Overview" canvasId="newStatusChart" hidden />
+          <Chart title="App EC Job Roles" canvasId="newRoleChart" hidden />
+        </div>
+
+        <div className="dashboard-charts">
+          <Chart title="Data EC Overview" canvasId="secondStatusChart" hidden />
+          <Chart title="Data EC Job Roles" canvasId="secondRoleChart" hidden />
+        </div>
       </div>
 
-      <div className="dashboard-charts">
-        <Chart title="EC Overview" canvasId="departmentChart" />
-        <Chart title="Applicants per EC" canvasId="departmentRoleChart" />
-      </div>
-
-      <div className="dashboard-charts">
-        <Chart title="Cloud EC Overview" canvasId="statusChart" hidden />
-        <Chart title="Cloud EC Job Roles" canvasId="roleChart" hidden />
-      </div>
-
-      <div className="dashboard-charts">
-        <Chart title="App EC Overview" canvasId="newStatusChart" hidden />
-        <Chart title="App EC Job Roles" canvasId="newRoleChart" hidden />
-      </div>
-
-      <div className="dashboard-charts">
-        <Chart title="Data EC Overview" canvasId="secondStatusChart" hidden />
-        <Chart title="Data EC Job Roles" canvasId="secondRoleChart" hidden />
-      </div>
+      <RightPanel />
     </div>
   );
 };
