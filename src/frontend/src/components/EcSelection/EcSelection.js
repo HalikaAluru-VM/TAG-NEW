@@ -14,12 +14,12 @@ const EcSelection = () => {
 
   return (
     <div>
-      <button id="toggle-sidebar-btn" onClick={toggleSidebar}>
+      {/* <button id="toggle-sidebar-btn" onClick={toggleSidebar}>
         ☰Menu
       </button>
 
       {/* Sidebar */}
-      <div className={`sidebar-menu ${sidebarVisible ? "show" : ""}`}>
+      {/* <div className={`sidebar-menu ${sidebarVisible ? "show" : ""}`}>
         <div
           className="sidebar-option active"
           onClick={() => navigateTo("Dashboard.html")}
@@ -55,7 +55,7 @@ const EcSelection = () => {
           <i className="fas fa-sign-out-alt"></i>
           <span>Logout</span>
         </div>
-      </div>
+      </div>  */}
 
       <div className="backbutton" onClick={() => navigateTo("index.html")}>
         <i className="fas fa-arrow-left"></i>
@@ -75,7 +75,7 @@ const EcSelection = () => {
           onClick={() => navigateTo("app-recruit", "App EC")}
         >
           <i className="fas fa-cogs card-icon"></i>
-          <div className="card-title">App EC test</div>
+          <div className="card-title">App EC</div>
         </div>
         <div
           className="card"
