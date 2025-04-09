@@ -529,7 +529,7 @@ const DashboardContent = () => {
   }, []);
 
   return (
-    <div id="content" style={{ display: "flex" }}>
+   <div id="content" style={{ display: "flex", transform: "translateX(-50px)" }}>
       <div style={{ flex: 1 }}>
         {/* Charts section at the top */}
         <div className="dashboard-charts">
