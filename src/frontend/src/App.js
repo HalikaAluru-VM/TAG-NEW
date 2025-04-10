@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./components/Login/Login";
 import Dashboard from "./components/Dashboard/Dashboard";
 import CandidatesPage from "./components/CandidatesPage/CandidatesPage";
+import AppRecruit from "./components/AppRecruit/AppRecruit";
 import "./styles/global.css"; // Import global styles
 
 const App = () => {
@@ -16,6 +17,8 @@ const App = () => {
 
         {/* Route for the Candidates Page */}
         <Route path="/candidatespage" element={<CandidatesPage />} />
+        <Route path="/app-recruit" element={<AppRecruit />} />
+        
       </Routes>
     </Router>
   );

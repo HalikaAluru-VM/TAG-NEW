@@ -1,6 +1,5 @@
-/* General Styles */
-body,
-html {
+/* General styles */
+body, html {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
@@ -9,21 +8,24 @@ html {
   height: 100%;
 }
 
-/* Logo Section */
-.image {
+.login-page {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Logo styling */
+.login-image {
   max-width: 46%;
   margin-top: 55px;
   position: fixed;
-  left: 50px; /* Adjust the position of the logo */
-  text-align: center;
 }
 
-.image img {
+.login-image img {
   max-width: 100%;
   height: auto;
 }
 
-/* Login Container */
+/* Main login container */
 #login-container {
   background-color: white;
   padding: 30px;
@@ -33,73 +35,102 @@ html {
   width: 100%;
   margin: 100px auto;
   position: fixed;
-  right: 50px; /* Position the login container to the right of the logo */
-  top: 50px;
-  text-align: center;
+  right: 100px;
+  top: -39px;
 }
 
-#login-form {
+/* Login heading */
+.login-heading {
+  text-align: center;
+  color: black;
+  font-size: 24px;
+  line-height: 1.5;
+}
+
+/* Login form container */
+.login-form-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-#login-form label {
+  justify-content: center;
   width: 100%;
-  text-align: center;
-  margin-bottom: 10px;
 }
 
-#team-select {
+.login-form-container label {
+  text-align: center;
+  margin-bottom: 8px;
+  color: #b0b0b0;
+}
+
+.login-form-container select {
   width: 90%;
   max-width: 270px;
   text-align: center;
-  margin-bottom: 20px;
+  margin: 10px 0;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: #E6E6FA;
+  color: black;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-#admin-credentials {
+.login-form-container select:hover {
+  background-color: #dcdcdc;
+}
+
+/* Admin credentials */
+.admin-credentials {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: 90%;
   max-width: 270px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-#admin-credentials div {
+.credential-field {
   display: flex;
   align-items: center;
+  width: 100%;
   margin-bottom: 10px;
 }
 
-#admin-credentials label {
+.credential-field label {
   margin-right: 10px;
+  width: auto;
+  text-align: left;
 }
 
-#admin-credentials input {
-  width: 100%;
+.credential-field input {
+  flex-grow: 1;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-#msal-login-button {
+/* Login button */
+button {
   max-width: 270px;
   padding: 10px;
-  background-color: #007bff;
+  background: linear-gradient(120deg, #e6e6fa, #daf7a6);
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 90%;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
-#msal-login-button:hover {
-  background-color: #0056b3;
+button:hover {
+  background: linear-gradient(120deg, #daf7a6, #e6e6fa);
 }
 
-/* Modal Styles */
+/* Modal styles */
 .modal {
-  display: none;
   position: fixed;
   z-index: 1000;
   left: 0;
@@ -108,32 +139,98 @@ html {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-  background-color: white;
+  background-color: #fff;
+  color: black;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
-  max-width: 400px;
+  width: fit-content;
   border-radius: 8px;
   text-align: center;
+  position: relative;
 }
 
-.modal-content .close {
+.close {
   color: #aaa;
-  float: right;
+  position: absolute;
+  right: 10px;
+  top: 0;
   font-size: 28px;
   font-weight: bold;
   cursor: pointer;
 }
 
-.modal-content .close:hover,
-.modal-content .close:focus {
-  color: black;
+.close:hover,
+.close:focus {
+  color: #000;
   text-decoration: none;
+}
+
+/* Welcome Modal Styles */
+.welcome-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.welcome-modal-content {
+  background-color: #fff;
+  color: black;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: fit-content;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.welcome-modal-content h2 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.welcome-modal-content h3 {
+  color: #3498db;
+  margin-bottom: 30px;
+  font-size: 20px;
+}
+
+.welcome-user {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* Styling for the modal close icon */
+.close-modal-icon {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
   cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-modal-icon:hover {
+  color: #ff0000;
 }
 
 /* Toast styles */
@@ -141,23 +238,46 @@ html {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #007bff;
-  color: white;
   padding: 10px 20px;
   border-radius: 5px;
   font-size: 14px;
-  display: none;
   z-index: 9999;
+  display: none;
 }
 
 .toast.show {
   display: block;
+  animation: fadeIn 0.3s;
 }
 
 .toast.success {
   background-color: #4CAF50;
+  color: white;
 }
 
 .toast.error {
   background-color: #f44336;
+  color: white;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .login-image {
+    position: static;
+    max-width: 80%;
+    margin: 20px auto;
+    display: block;
+  }
+
+  #login-container {
+    position: static;
+    margin: 20px auto;
+    right: auto;
+    top: auto;
+  }
 }
