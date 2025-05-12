@@ -98,7 +98,7 @@ const Login = () => {
             if (["tag", "app-ec", "data-ec", "cloud-ec"].includes(selectedTeam)) {
               navigate(`/dashboard?ec_mapping=${encodeURIComponent(ec_mapping)}`);
             } else if (selectedTeam === "panel") {
-              navigate(`/panelpage?ec_mapping=${encodeURIComponent(ec_mapping)}`);
+              navigate(`/panel?ec_mapping=${encodeURIComponent(ec_mapping)}`);
             }
           }, 3000);
         }
