@@ -8,55 +8,18 @@ const EcSelection = () => {
     setSidebarVisible(!sidebarVisible);
   };
 
-  const navigateTo = (url) => {
-    window.location.href = url;
+  // Modified navigateTo to support query params
+  const navigateTo = (url, ecName) => {
+    if (ecName) {
+      window.location.href = `${url}?ec=${encodeURIComponent(ecName)}`;
+    } else {
+      window.location.href = url;
+    }
   };
 
   return (
     <div>
-      {/* <button id="toggle-sidebar-btn" onClick={toggleSidebar}>
-        ☰Menu
-      </button>
-
-      {/* Sidebar */}
-      {/* <div className={`sidebar-menu ${sidebarVisible ? "show" : ""}`}>
-        <div
-          className="sidebar-option active"
-          onClick={() => navigateTo("Dashboard.html")}
-        >
-          <i className="fas fa-tachometer-alt"></i>
-          <span>Dashboard</span>
-        </div>
-        <div
-          className="sidebar-option"
-          onClick={() => navigateTo("ECselection.html")}
-        >
-          <i className="fas fa-users"></i>
-          <span>Recruit</span>
-        </div>
-        <div
-          className="sidebar-option"
-          onClick={() => navigateTo("candidatespage.html")}
-        >
-          <i className="fas fa-tasks"></i>
-          <span>RRF Tracking</span>
-        </div>
-        <div
-          className="sidebar-option"
-          onClick={() => navigateTo("GTPrescreening.html")}
-        >
-          <i className="fas fa-tasks"></i>
-          <span>GT's Prescreening</span>
-        </div>
-        <div
-          className="sidebar-option logout-option"
-          onClick={() => navigateTo("index.html")}
-        >
-          <i className="fas fa-sign-out-alt"></i>
-          <span>Logout</span>
-        </div>
-      </div>  */}
-
+      {/* Back Button */}
       <div className="backbutton" onClick={() => navigateTo("index.html")}>
         <i className="fas fa-arrow-left"></i>
       </div>

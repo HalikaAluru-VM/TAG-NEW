@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import "./Dashboard.css";
 
-// Sidebar Component
 const Sidebar = ({ onNavigate }) => {
   return (
     <div id="sidebar" className="sidebar-menu">
@@ -63,7 +62,6 @@ const Sidebar = ({ onNavigate }) => {
   );
 };
 
-// Filter Container Component
 const FilterContainer = () => {
   const [filter, setFilter] = useState("24_hours");
   const [customRangeVisible, setCustomRangeVisible] = useState(false);
@@ -102,10 +100,9 @@ const FilterContainer = () => {
   );
 };
 
-// Chart Component
 const Chart = ({ title, canvasId, hidden }) => {
   useEffect(() => {
-    // Initialize chart logic here if needed
+    // Chart initialization logic would go here
   }, []);
 
   return (
@@ -118,7 +115,6 @@ const Chart = ({ title, canvasId, hidden }) => {
   );
 };
 
-// Card Component
 const Card = ({ id, count, label, onClick }) => {
   return (
     <div className="cards" id={id} onClick={onClick}>
@@ -128,7 +124,6 @@ const Card = ({ id, count, label, onClick }) => {
   );
 };
 
-// RoleCard Component
 const RoleCard = ({ title, icon, tag1, tag2, applicantsCount }) => {
   const iconMap = {
     "software": "</>",
@@ -163,7 +158,6 @@ const RoleCard = ({ title, icon, tag1, tag2, applicantsCount }) => {
   );
 };
 
-// PopupModal Component
 const PopupModal = ({ isVisible, title, tableId, onClose, children, showFilters, loading }) => {
   if (!isVisible) return null;
 
@@ -271,7 +265,6 @@ const PopupModal = ({ isVisible, title, tableId, onClose, children, showFilters,
   );
 };
 
-// RightPanel Component
 const RightPanel = () => {
   const [rrfCount, setRrfCount] = useState(0);
   const [imochaResults, setImochaResults] = useState({
@@ -295,7 +288,6 @@ const RightPanel = () => {
       padding: "10px",
       width: "300px"
     }}>
-      {/* Total RRF Count */}
       <div style={{
         backgroundColor: "white",
         borderRadius: "8px",
@@ -374,7 +366,6 @@ const RightPanel = () => {
         </div>
       </div>
 
-      {/* L1 iMocha Results */}
       <div style={{
         backgroundColor: "white",
         borderRadius: "8px",
@@ -453,7 +444,6 @@ const RightPanel = () => {
         </div>
       </div>
 
-      {/* Candidates Status */}
       <div style={{
         backgroundColor: "white",
         borderRadius: "8px",
@@ -503,7 +493,6 @@ const RightPanel = () => {
   );
 };
 
-// Dashboard Content Component
 const DashboardContent = () => {
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [isShortlistedPopupVisible, setIsShortlistedPopupVisible] = useState(false);
@@ -518,7 +507,6 @@ const DashboardContent = () => {
   const handleShortlistedPopupClose = () => setIsShortlistedPopupVisible(false);
   const handleRejectedPopupClose = () => setIsRejectedPopupVisible(false);
 
-  // Simulate loading role counts
   useEffect(() => {
     const timer = setTimeout(() => {
       setRoleCounts({
@@ -541,8 +529,30 @@ const DashboardContent = () => {
   }, []);
 
   return (
-    <div id="content" style={{ display: "flex" }}>
+   <div id="content" style={{ display: "flex", transform: "translateX(-50px)" }}>
       <div style={{ flex: 1 }}>
+        {/* Charts section at the top */}
+        <div className="dashboard-charts">
+          <Chart title="EC Overview" canvasId="departmentChart" />
+          <Chart title="Applicants per EC" canvasId="departmentRoleChart" />
+        </div>
+
+        <div className="dashboard-charts">
+          <Chart title="Cloud EC Overview" canvasId="statusChart" hidden />
+          <Chart title="Cloud EC Job Roles" canvasId="roleChart" hidden />
+        </div>
+
+        <div className="dashboard-charts">
+          <Chart title="App EC Overview" canvasId="newStatusChart" hidden />
+          <Chart title="App EC Job Roles" canvasId="newRoleChart" hidden />
+        </div>
+
+        <div className="dashboard-charts">
+          <Chart title="Data EC Overview" canvasId="secondStatusChart" hidden />
+          <Chart title="Data EC Job Roles" canvasId="secondRoleChart" hidden />
+        </div>
+
+        {/* Cards container after charts */}
         <div className="dashboard-container">
           <Card
             id="card"
@@ -570,9 +580,7 @@ const DashboardContent = () => {
                 <th>Status</th>
               </tr>
             </thead>
-            <tbody>
-              {/* Dynamically loaded data will be inserted here */}
-            </tbody>
+            <tbody></tbody>
           </PopupModal>
 
           <Card
@@ -601,9 +609,7 @@ const DashboardContent = () => {
                 <th>Status</th>
               </tr>
             </thead>
-            <tbody>
-              {/* Dynamically loaded data will be inserted here */}
-            </tbody>
+            <tbody></tbody>
           </PopupModal>
 
           <Card
@@ -632,9 +638,7 @@ const DashboardContent = () => {
                 <th>Status</th>
               </tr>
             </thead>
-            <tbody>
-              {/* Dynamically loaded data will be inserted here */}
-            </tbody>
+            <tbody></tbody>
           </PopupModal>
 
           <Card id="imochaInviteCard" count="Loading..." label="Imocha Invite" />
@@ -741,26 +745,6 @@ const DashboardContent = () => {
             </div>
           </div>
         </div>
-
-        <div className="dashboard-charts">
-          <Chart title="EC Overview" canvasId="departmentChart" />
-          <Chart title="Applicants per EC" canvasId="departmentRoleChart" />
-        </div>
-
-        <div className="dashboard-charts">
-          <Chart title="Cloud EC Overview" canvasId="statusChart" hidden />
-          <Chart title="Cloud EC Job Roles" canvasId="roleChart" hidden />
-        </div>
-
-        <div className="dashboard-charts">
-          <Chart title="App EC Overview" canvasId="newStatusChart" hidden />
-          <Chart title="App EC Job Roles" canvasId="newRoleChart" hidden />
-        </div>
-
-        <div className="dashboard-charts">
-          <Chart title="Data EC Overview" canvasId="secondStatusChart" hidden />
-          <Chart title="Data EC Job Roles" canvasId="secondRoleChart" hidden />
-        </div>
       </div>
 
       <RightPanel />
@@ -768,7 +752,6 @@ const DashboardContent = () => {
   );
 };
 
-// Main Dashboard Component
 const Dashboard = () => {
   const [searchParams] = useSearchParams();
   const ecMapping = searchParams.get("ec_mapping");

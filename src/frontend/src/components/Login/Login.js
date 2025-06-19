@@ -5,17 +5,19 @@ import "./Login.css";
 
 const msalConfig = {
   auth: {
-    clientId: "ed0b1bf7-b012-4e13-a526-b696932c0673", // Replace with your Azure AD app client ID
-    authority: "https://login.microsoftonline.com/13085c86-4bcb-460a-a6f0-b373421c6323", // Replace with your tenant ID
-    redirectUri: "http://localhost:3000", // Ensure this matches Azure AD's redirect URI
+    clientId: "ed0b1bf7-b012-4e13-a526-b696932c0673",
+    authority: "https://login.microsoftonline.com/13085c86-4bcb-460a-a6f0-b373421c6323",
+    redirectUri: "http://localhost:3000",
   },
 };
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
 const Login = () => {
-  const [htmlContent, setHtmlContent] = useState("");
-  const [isMsalInitialized, setIsMsalInitialized] = useState(false); // Track MSAL initialization
+  const [isMsalInitialized, setIsMsalInitialized] = useState(false);
+  const [welcomeModalOpen, setWelcomeModalOpen] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [selectedTeam, setSelectedTeam] = useState("");
   const navigate = useNavigate();
 
   // Initialize MSAL instance
@@ -24,7 +26,7 @@ const Login = () => {
       try {
         await msalInstance.initialize();
         console.log("MSAL initialized successfully");
-        setIsMsalInitialized(true); // Mark MSAL as initialized
+        setIsMsalInitialized(true);
       } catch (error) {
         console.error("MSAL initialization failed:", error);
       }
@@ -33,157 +35,169 @@ const Login = () => {
     initializeMsal();
   }, []);
 
-  // Fetch the HTML content from Login.html
-  useEffect(() => {
-    fetch("/Login.html")
-      .then((response) => response.text())
-      .then((html) => {
-        console.log("Fetched HTML:", html); // Log the fetched HTML
-        setHtmlContent(html);
-      })
-      .catch((error) => console.error("Error loading HTML:", error));
-  }, []);
+  const handleTeamChange = (event) => {
+    setSelectedTeam(event.target.value);
+  };
 
-  // Add event listeners after the HTML content is injected
-  useEffect(() => {
-    if (htmlContent) {
-      const teamSelect = document.getElementById("team-select");
-      const adminCredentials = document.getElementById("admin-credentials");
-      const loginButton = document.getElementById("msal-login-button");
-      const modal = document.getElementById("myModal");
-      const modalText = document.getElementById("modal-text");
-      const closeModal = document.querySelector(".close");
-
-      if (!teamSelect || !loginButton || !modal || !modalText) {
-        console.error("Required elements not found in the DOM.");
-        return;
-      }
-
-      // Function to show the modal
-      const showModal = (message) => {
-        modalText.textContent = message;
-        modal.style.display = "block";
-      };
-
-      // Function to hide the modal
-      const hideModal = () => {
-        modal.style.display = "none";
-      };
-
-      // Close the modal when clicking the close button
-      closeModal.addEventListener("click", hideModal);
-
-      // Close the modal when clicking outside of it
-      window.addEventListener("click", (event) => {
-        if (event.target === modal) {
-          hideModal();
-        }
-      });
-
-      // Handle team selection
-      const handleTeamChange = (event) => {
-        if (event.target.value === "admin-Login") {
-          adminCredentials.style.display = "flex";
-        } else {
-          adminCredentials.style.display = "none";
-        }
-      };
-
-      // Handle login button click
-      const handleLoginClick = async () => {
-        if (!isMsalInitialized) {
-          alert("MSAL is not initialized. Please try again later.");
-          return;
-        }
-
-        const selectedTeam = teamSelect.value;
-        if (!selectedTeam) {
-          showModal("Please select a team.");
-          return;
-        }
-
-        if (selectedTeam === "admin-Login") {
-          const username = document.getElementById("admin-username").value;
-          const password = document.getElementById("admin-password").value;
-          if (username === "admin" && password === "admin") {
-            showModal("Welcome Admin!");
-          } else {
-            showModal("Invalid admin credentials.");
-          }
-        } else {
-          try {
-            const loginRequest = {
-              scopes: ["openid", "profile", "user.read", "Mail.Send"],
-            };
-            const loginResponse = await msalInstance.loginPopup(loginRequest);
-            const account = loginResponse.account;
-
-            if (account) {
-              const email = account.username;
-              localStorage.setItem("userEmail", email);
-              console.log("Logged in email:", email);
-
-              const backendPort = process.env.REACT_APP_BACKEND_PORT || 8000;
-              const apiUrl = `http://localhost:${backendPort}/api/auth/check-admin`;
-
-              const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email }),
-              });
-
-              if (!response.ok) {
-                const errorData = await response.json();
-                showModal(errorData.error || "Error checking admin access.");
-                return;
-              }
-
-              const { ec_mapping } = await response.json();
-              if (["tag", "app-ec", "data-ec", "cloud-ec"].includes(selectedTeam)) {
-                navigate(`/dashboard?ec_mapping=${encodeURIComponent(ec_mapping)}`);
-              } else if (selectedTeam === "panel") {
-                navigate(`/panelpage?ec_mapping=${encodeURIComponent(ec_mapping)}`);
-              }
-
-              // Show modal with welcome message and email
-              showModal(`Welcome! Logged in as ${email}`);
-            }
-          } catch (error) {
-            console.error("Login failed:", error);
-            if (error instanceof InteractionRequiredAuthError) {
-              showModal("Interaction required for login. Please try again.");
-            } else {
-              showModal(
-                error.message || "Authentication failed. Please check your network or contact support."
-              );
-            }
-          }
-        }
-      };
-
-      // Add event listeners
-      teamSelect.addEventListener("change", handleTeamChange);
-      loginButton.addEventListener("click", handleLoginClick);
-
-      // Cleanup event listeners on unmount
-      return () => {
-        teamSelect.removeEventListener("change", handleTeamChange);
-        loginButton.removeEventListener("click", handleLoginClick);
-        closeModal.removeEventListener("click", hideModal);
-        window.removeEventListener("click", hideModal);
-      };
+  const handleLoginClick = async () => {
+    if (!isMsalInitialized) {
+      alert("MSAL is not initialized. Please try again later.");
+      return;
     }
-  }, [htmlContent, isMsalInitialized, navigate]);
+
+    if (!selectedTeam) {
+      alert("Please select a team.");
+      return;
+    }
+
+    if (selectedTeam === "admin-Login") {
+      const username = document.getElementById("admin-username").value;
+      const password = document.getElementById("admin-password").value;
+      if (username === "admin" && password === "admin") {
+        setUserName("Admin");
+        setWelcomeModalOpen(true);
+        setTimeout(() => {
+          navigate("/admin");
+        }, 3000);
+      } else {
+        alert("Invalid admin credentials.");
+      }
+    } else {
+      try {
+        const loginRequest = {
+          scopes: ["openid", "profile", "user.read", "Mail.Send"],
+        };
+        const loginResponse = await msalInstance.loginPopup(loginRequest);
+        const account = loginResponse.account;
+
+        if (account) {
+          const email = account.username;
+          setUserName(account.name || email);
+          setWelcomeModalOpen(true);
+
+          const backendPort = process.env.REACT_APP_BACKEND_PORT || 8000;
+          const apiUrl = `http://localhost:${backendPort}/api/auth/check-admin`;
+
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            alert(errorData.error || "Error checking admin access.");
+            return;
+          }
+
+          const { ec_mapping } = await response.json();
+
+          setTimeout(() => {
+            if (["tag", "app-ec", "data-ec", "cloud-ec"].includes(selectedTeam)) {
+              navigate(`/dashboard?ec_mapping=${encodeURIComponent(ec_mapping)}`);
+            } else if (selectedTeam === "panel") {
+              navigate(`/panel?ec_mapping=${encodeURIComponent(ec_mapping)}`);
+            }
+          }, 3000);
+        }
+      } catch (error) {
+        console.error("Login failed:", error);
+        if (error instanceof InteractionRequiredAuthError) {
+          alert("Interaction required for login. Please try again.");
+        } else {
+          alert("Authentication failed. Please check your network or contact support.");
+        }
+      }
+    }
+  };
 
   return (
-    <div>
+    <div className="login-page">
+      {/* Logo Section */}
+      <div className="login-image">
+        <img src="/logo.png" alt="Logo" />
+      </div>
+
       {/* Login Form Section */}
-      <div
-        className="login-container"
-        dangerouslySetInnerHTML={{ __html: htmlContent }}
-      ></div>
+      <div id="login-container">
+        <h1 className="login-heading">
+          Welcome To ValueMomentum Hire Assist Portal
+        </h1>
+        <form id="login-form" className="login-form-container">
+          <label htmlFor="team-select" className="team-select-label">
+            Select Your Team:
+          </label>
+          <select
+            id="team-select"
+            required
+            value={selectedTeam}
+            onChange={handleTeamChange}
+            className="team-select-dropdown"
+          >
+            <option value="">Select Your Team</option>
+            <option value="tag">TAG Team</option>
+            <option value="panel">Panel Login</option>
+            <option value="app-ec">App EC</option>
+            <option value="data-ec">Data EC</option>
+            <option value="cloud-ec">Cloud EC</option>
+            <option value="admin-Login">Admin</option>
+          </select>
+
+          {selectedTeam === "admin-Login" && (
+            <div id="admin-credentials" className="admin-credentials">
+              <div className="credential-field">
+                <label htmlFor="admin-username">Username:</label>
+                <input
+                  type="text"
+                  id="admin-username"
+                  placeholder="Enter Username"
+                />
+              </div>
+              <div className="credential-field">
+                <label htmlFor="admin-password">Password:</label>
+                <input
+                  type="password"
+                  id="admin-password"
+                  placeholder="Enter Password"
+                />
+              </div>
+            </div>
+          )}
+
+          <button
+            type="button"
+            id="msal-login-button"
+            onClick={handleLoginClick}
+            className="login-button"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+
+      {/* Welcome Modal */}
+      {welcomeModalOpen && (
+        <div className="welcome-modal-overlay">
+          <div className="welcome-modal-content">
+            <span
+              className="close-modal-icon"
+              onClick={() => {
+                setWelcomeModalOpen(false);
+                if (selectedTeam) {
+                  navigate(`/dashboard?ec_mapping=${encodeURIComponent(selectedTeam)}`);
+                } else {
+                  alert("No team selected. Please try again.");
+                }
+              }}
+            >
+              &times;
+            </span>
+            <div className="welcome-user">Welcome, {userName}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
