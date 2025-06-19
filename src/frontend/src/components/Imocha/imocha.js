@@ -152,7 +152,7 @@ const IMocha = () => {
       showToast("Invite sent successfully.", "success");
       sendButton.textContent = "Invite Sent";
       setTimeout(() => {
-        window.location.href = "candidatespage.html";
+        window.location.href = "candidatespage";
       }, 3000);
     } catch (error) {
       showToast("Failed to send invite request. Please try again.", "error");
@@ -193,7 +193,7 @@ const IMocha = () => {
     }, 0);
 
     setTimeout(() => {
-      window.location.href = "candidatespage.html";
+      window.location.href = "candidatespage";
     }, 3000);
   };
 
@@ -254,27 +254,38 @@ const IMocha = () => {
 
   const handleSaveStep = () => {
     if (newStep.name && newStep.position) {
-      const newStepObj = {
-        id: steps.length + 1,
-        title: newStep.name,
-        active: false
-      };
-
-      let newSteps;
-      if (newStep.position === "before") {
-        const fitmentIndex = steps.findIndex(step => step.title === "Fitment");
-        newSteps = [...steps];
-        newSteps.splice(fitmentIndex, 0, newStepObj);
+      let updatedSteps = [...steps];
+  
+      const fitmentIndex = steps.findIndex(step => step.title === "Fitment");
+  
+      if (newStep.position === "before" && fitmentIndex !== -1) {
+        // Insert before Fitment
+        updatedSteps.splice(fitmentIndex, 0, {
+          id: 0, // temp id, will reassign below
+          title: newStep.name,
+          active: false
+        });
       } else {
-        newSteps = [...steps, newStepObj];
+        // Insert at the end
+        updatedSteps.push({
+          id: 0, // temp id, will reassign below
+          title: newStep.name,
+          active: false
+        });
       }
-
-      setSteps(newSteps);
+  
+      // Reassign IDs after insertion
+      updatedSteps = updatedSteps.map((step, index) => ({
+        ...step,
+        id: index + 1
+      }));
+  
+      setSteps(updatedSteps);
       setShowPopupForm(false);
       setNewStep({ name: '', position: '' });
     }
   };
-
+  
   const openFeedbackFormPopup = (round) => {
     // Implementation for feedback form popup
     console.log("Opening feedback form for:", round);
@@ -338,7 +349,7 @@ const IMocha = () => {
         </div>
       )}
 
-      <div className="container">
+      <div className="container" style={{ height: 'fit-content' }}>
         <div className="header">
           <div className="profile-info">
             <div className="profile-img">

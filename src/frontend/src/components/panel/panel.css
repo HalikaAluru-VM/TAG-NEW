@@ -251,14 +251,13 @@
 }
 
 .modal {
-    display: block;
-    position: fixed;
+    display: table;
+    position: absolute;
     z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
+    left: 37%;
+    top: 100%;
+    width: 31%;
     height: 100%;
-    background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {

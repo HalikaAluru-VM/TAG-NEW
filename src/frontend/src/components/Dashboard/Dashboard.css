@@ -5,8 +5,8 @@ body,
     padding: 0;
   background: linear-gradient(120deg, #e6e6fa, #daf7a6);
   color: #e0e0e0;
-  height: 100%;
-  overflow-x: hidden;
+
+
 }
 
 .dashboard-grid {
@@ -55,10 +55,10 @@ body,
 
 .dashboard-charts {
   display: flex;
-  flex-wrap: wrap;
+
   gap: 15px;
   padding-left: 200px;
-  width: calc(100% - 220px);
+  width:100%;
 }
 
 .parent-container {
@@ -1333,7 +1333,7 @@ option {
   position: fixed;
   top: 0;
   left: 0;
-  display: flex;
+  display: none;
   flex-direction: column;
   padding: 20px;
 }

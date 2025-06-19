@@ -319,13 +319,9 @@ body {
     display: block;
 }
 
-.toast.success {
-    background-color: #4CAF50;
-}
+      
 
-.toast.error {
-    background-color: #f44336;
-}
+    
 
 .header {
     background-color: white;

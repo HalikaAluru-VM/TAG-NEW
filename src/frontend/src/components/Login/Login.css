@@ -1,12 +1,12 @@
 /* General styles */
-body, html {
+/* body, html {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
   background: linear-gradient(120deg, #e6e6fa, #daf7a6);
-  color: #333;
+
   height: 100%;
-}
+} */
 
 .login-page {
   min-height: 100vh;
@@ -17,7 +17,7 @@ body, html {
 .login-image {
   max-width: 46%;
   margin-top: 55px;
-  position: fixed;
+  /* position: fixed; */
 }
 
 .login-image img {
@@ -173,7 +173,7 @@ button:hover {
 }
 
 /* Welcome Modal Styles */
-.welcome-modal-overlay {
+/* .welcome-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -183,7 +183,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
 .welcome-modal-content {
   background-color: #fff;
@@ -234,7 +234,7 @@ button:hover {
 }
 
 /* Toast styles */
-.toast {
+/* .toast {
   position: fixed;
   top: 20px;
   right: 20px;
@@ -248,9 +248,9 @@ button:hover {
 .toast.show {
   display: block;
   animation: fadeIn 0.3s;
-}
+} */
 
-.toast.success {
+/* .toast.success {
   background-color: #4CAF50;
   color: white;
 }
@@ -258,7 +258,7 @@ button:hover {
 .toast.error {
   background-color: #f44336;
   color: white;
-}
+} */
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-20px); }

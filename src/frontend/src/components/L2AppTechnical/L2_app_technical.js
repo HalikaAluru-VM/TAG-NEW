@@ -126,27 +126,27 @@ const L2AppTechnical = () => {
         <table>
           <tbody>
             <tr>
-              <td className="details">RRF ID</td>
+              <td   >RRF ID</td>
               <td><input type="text" id="rrf-id" placeholder="" value={candidateData.rrf_id} readOnly /></td>
             </tr>
             <tr>
-              <td className="details">Job Designation</td>
+              <td   >Job Designation</td>
               <td><input type="text" id="position" placeholder="" value={candidateData.role} readOnly /></td>
             </tr>
             <tr>
-              <td className="details">Name of the Candidate</td>
+              <td   >Name of the Candidate</td>
               <td><input type="text" id="candidate-name" placeholder="" value={candidateData.candidate_name} readOnly /></td>
             </tr>
             <tr>
-              <td className="details">Date of Interview</td>
+              <td   >Date of Interview</td>
               <td><input type="text" id="interview-date" value={candidateData.l_2_interviewdate} readOnly /></td>
             </tr>
             <tr>
-              <td className="details">Interviewer Mail</td>
+              <td   >Interviewer Mail</td>
               <td><input type="text" id="interviewer-name" placeholder="" value={candidateData.panel_name} readOnly /></td>
             </tr>
             <tr>
-              <td className="details">TAG Team Member</td>
+              <td   >TAG Team Member</td>
               <td><input type="text" id="hr-email" placeholder="" value={candidateData.hr_email} readOnly /></td>
             </tr>
           </tbody>

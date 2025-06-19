@@ -302,7 +302,7 @@ body {
     max-width: 200px;
 }
 
-.toast {
+/* .toast {
     position: fixed;
     top: 20px;
     right: 20px;
@@ -317,15 +317,11 @@ body {
 
 .toast.show {
     display: block;
-}
+} */
 
-.toast.success {
-    background-color: #4CAF50;
-}
+      
 
-.toast.error {
-    background-color: #f44336;
-}
+    
 
 .header {
     background-color: white;

@@ -40,7 +40,7 @@ const AppRecruit = () => {
       auth: {
         clientId: "ed0b1bf7-b012-4e13-a526-b696932c0673",
         authority: "https://login.microsoftonline.com/13085c86-4bcb-460a-a6f0-b373421c6323",
-        redirectUri: "https://demotag.vercel.app",
+        redirectUri: "http://localhost:8000",
       },
     };
     
@@ -68,7 +68,7 @@ const AppRecruit = () => {
 
   // Navigation functions
   const navigateToPage = () => {
-    window.location.href = "ECselection.html";
+    window.location.href = "/ec-selection";
   };
 
   const navigateTo = (page) => {
@@ -78,25 +78,29 @@ const AppRecruit = () => {
   // Role selection and popup handling
   const selectRoleAndOpenPopup = (role, dropdownId) => {
     console.log("Selected role:", role);
-    setSelectedRole(role);
-
-    if (!cloudProvider) {
-      setShowCloudProviderPopup(true);
-      return;
-    }
-
+  
     const level = document.getElementById(dropdownId)?.value;
     if (level === 'select') {
       setPopupMessage('Please select a level before proceeding.');
       setShowSuccessPopup(true);
       return;
     }
-
+  
+    if (!cloudProvider) {
+      setShowCloudProviderPopup(true);
+      return;
+    }
+  
     setSelectedLevel(level);
+  
+    // Format: L2 Azure Java
+    const formattedSelection = `${selectedLevel} ${cloudProvider} ${role}`;
+    setSelectedRole(formattedSelection);
+  
     setShowResumePopup(true);
-
+  
     // Fetch job description
-    fetchJobDescription(role, cloudProvider, level)
+    fetchJobDescription(role, cloudProvider, selectedLevel)
       .then(jobDescription => {
         console.log("Job description fetched:", jobDescription);
       })
@@ -104,6 +108,7 @@ const AppRecruit = () => {
         console.error("Error fetching job description:", error);
       });
   };
+  
 
   const fetchJobDescription = (role, cloudProvider, selectedLevel) => {
     let fileName = '';
@@ -189,7 +194,7 @@ const AppRecruit = () => {
           let formData = new FormData();
           formData.append("word", file);
 
-          const response = await fetch("https://demotag.vercel.app/docxtopdf", {
+          const response = await fetch("http://localhost:8000/docxtopdf", {
             method: "POST",
             body: formData,
           });
@@ -390,7 +395,7 @@ const AppRecruit = () => {
 
   const sendCountToDatabase = async (count) => {
     try {
-      const response = await fetch('https://demotag.vercel.app/send-resumes-count', {
+      const response = await fetch('http://localhost:8000/send-resumes-count', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -581,7 +586,7 @@ const AppRecruit = () => {
       const questionsContent = questionData.content;
 
       setShowLoadingPopup(false);
-      displayEvaluationInCards(evaluationContent, resumeUrl, globalHrEmail, globalRrfId, selectedValue);
+      displayEvaluationInCards(evaluationContent, resumeUrl, hrEmail, rrfId, selectedValue);
       console.log(questionsContent);
     } catch (error) {
       console.error('Error evaluating resume:', error);
@@ -592,7 +597,7 @@ const AppRecruit = () => {
   };
 
   // Display evaluation results
-  const displayEvaluationInCards = (content, resumeUrl, globalHrEmail, globalRrfId, selectedValue) => {
+  const displayEvaluationInCards = (content, resumeUrl, hrEmail, rrfId, selectedValue) => {
     console.log("Evaluation Content:", content);
     const container = document.getElementById('evaluation-result-container');
     if (!container) return;
@@ -674,6 +679,7 @@ const AppRecruit = () => {
         const card = document.createElement('div');
         card.classList.add('card');
         card.style.color = '#b0b0b0';
+        card.style.width = '100%';
 
         const heading = document.createElement('h2');
         heading.textContent = section.title;
@@ -702,7 +708,7 @@ const AppRecruit = () => {
 
           // Update database
           const updateField = candidateStatus === "Rejected" ? "rejected" : "shortlisted";
-          fetch('https://demotag.vercel.app/update-resume-count', {
+          fetch('http://localhost:8000/update-resume-count', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -740,17 +746,17 @@ const AppRecruit = () => {
     }
 
     // Save candidate info
-    sendCandidateInfoToDB(candidateName, candidateEmail, candidateStatus, selectedRole, suitabilityPercentage, candidatePhoneNumber, resumeUrl, globalHrEmail, globalRrfId, selectedValue);
-    sendPrescreeningInfoToDB(candidateName, candidateEmail, candidateStatus, selectedRole, suitabilityPercentage, candidatePhoneNumber, resumeUrl, globalHrEmail, globalRrfId);
-    sendRRFToDB(globalRrfId, selectedRole, selectedValue, 'open');
-    sendCandidateDetailsToHR(candidateName, candidateEmail, candidateStatus, selectedRole, suitabilityPercentage, candidatePhoneNumber, resumeUrl, globalHrEmail, globalRrfId, selectedValue, finalSummary);
+    sendCandidateInfoToDB(candidateName, candidateEmail, candidateStatus, selectedRole, suitabilityPercentage, candidatePhoneNumber, resumeUrl, hrEmail, rrfId, selectedValue);
+    sendPrescreeningInfoToDB(candidateName, candidateEmail, candidateStatus, selectedRole, suitabilityPercentage, candidatePhoneNumber, resumeUrl, hrEmail, rrfId);
+    sendRRFToDB(rrfId, selectedRole, selectedValue, 'open');
+    sendCandidateDetailsToHR(candidateName, candidateEmail, candidateStatus, selectedRole, suitabilityPercentage, candidatePhoneNumber, resumeUrl, hrEmail, rrfId, selectedValue, finalSummary);
 
     // Create download button
-    const downloadButton = document.createElement('button');
-    downloadButton.classList.add('download-btn');
-    downloadButton.innerHTML = '<i class="fas fa-download"></i> Download Feedback';
-    downloadButton.onclick = () => downloadContentAsFile(textContent, candidateName, selectedRole, selectedLevel, cloudProvider, candidateStatus);
-    container.appendChild(downloadButton);
+    // const downloadButton = document.createElement('button');
+    // downloadButton.classList.add('download-btn');
+    // downloadButton.innerHTML = '<i class="fas fa-download"></i> Download Feedback';
+    // downloadButton.onclick = () => downloadContentAsFile(textContent, candidateName, selectedRole, selectedLevel, cloudProvider, candidateStatus);
+    // container.appendChild(downloadButton);
 
     // Save to localStorage
     const candidateDetails = {
@@ -761,8 +767,8 @@ const AppRecruit = () => {
       suitabilityPercentage,
       candidatePhoneNumber,
       finalSummary,
-      globalHrEmail,
-      globalRrfId,
+      hrEmail,
+      rrfId,
       eng_center: selectedValue
     };
     localStorage.setItem("candidateDetails", JSON.stringify(candidateDetails));
@@ -773,7 +779,7 @@ const AppRecruit = () => {
       nextButton.classList.add('next-btn');
       nextButton.textContent = 'Next';
       nextButton.onclick = () => {
-        window.location.href = 'prescreeningform.html';
+        window.location.href = '/prescreeningform';
       };
       container.appendChild(nextButton);
     }
@@ -945,11 +951,11 @@ const AppRecruit = () => {
   };
 
   // Database functions
-  const sendCandidateInfoToDB = (name, email, status, role, suitabilityPercentage, candidatePhoneNumber, resumeUrl, globalHrEmail, globalRrfId, selectedValue) => {
+  const sendCandidateInfoToDB = (name, email, status, role, suitabilityPercentage, candidatePhoneNumber, resumeUrl, hrEmail, rrfId, selectedValue) => {
     let recruitmentPhase = status.toLowerCase() === 'rejected' ? 'prescreening' : 'Move to L1';
     const resume_score = `${suitabilityPercentage}% Matching With JD`;
 
-    fetch('https://demotag.vercel.app/api/add-candidate-info', {
+    fetch('http://localhost:8000/api/add-candidate-info', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -963,8 +969,8 @@ const AppRecruit = () => {
         role: role,
         recruitment_phase: recruitmentPhase,
         resume_score: resume_score,
-        hr_email: globalHrEmail,
-        rrf_id: globalRrfId,
+        hr_email: hrEmail,
+        rrf_id: rrfId,
         eng_center: selectedValue
       }),
     })
@@ -982,11 +988,11 @@ const AppRecruit = () => {
       });
   };
 
-  const sendPrescreeningInfoToDB = (name, email, status, role, suitabilityPercentage, candidatePhoneNumber, resumeUrl, globalHrEmail, globalRrfId) => {
+  const sendPrescreeningInfoToDB = (name, email, status, role, suitabilityPercentage, candidatePhoneNumber, resumeUrl, hrEmail, rrfId) => {
     let recruitmentPhase = status.toLowerCase() === 'rejected' ? 'Rejected' : 'Move to L1';
     const resume_score = `${suitabilityPercentage}% Matching With JD`;
 
-    fetch('https://demotag.vercel.app/api/add-prescreening-info', {
+    fetch('http://localhost:8000/api/add-prescreening-info', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1000,8 +1006,8 @@ const AppRecruit = () => {
         recruitment_phase: recruitmentPhase,
         candidate_phone: candidatePhoneNumber,
         resume_score: resume_score,
-        hr_email: globalHrEmail,
-        rrf_id: globalRrfId
+        hr_email: hrEmail,
+        rrf_id: rrfId
       }),
     })
       .then(response => response.json())
@@ -1014,7 +1020,7 @@ const AppRecruit = () => {
   };
 
   const sendRRFToDB = (rrfId, role, selectedValue, status = 'open') => {
-    fetch('https://demotag.vercel.app/api/rrf-update', {
+    fetch('http://localhost:8000/api/rrf-update', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1037,7 +1043,7 @@ const AppRecruit = () => {
       });
   };
 
-  const sendCandidateDetailsToHR = async (candidateName, candidateEmail, statusText, role, suitabilityPercentage, candidatePhoneNumber, resumeUrl, globalHrEmail, globalRrfId, selectedValue, finalSummary) => {
+  const sendCandidateDetailsToHR = async (candidateName, candidateEmail, statusText, role, suitabilityPercentage, candidatePhoneNumber, resumeUrl, hrEmail, rrfId, selectedValue, finalSummary) => {
     const loggedInUserEmail = localStorage.getItem("userEmail");
     if (!loggedInUserEmail) {
       showToast("User is not logged in. Please log in again.", "error");
@@ -1049,7 +1055,7 @@ const AppRecruit = () => {
         auth: {
           clientId: "ed0b1bf7-b012-4e13-a526-b696932c0673",
           authority: "https://login.microsoftonline.com/13085c86-4bcb-460a-a6f0-b373421c6323",
-          redirectUri: "https://demotag.vercel.app",
+          redirectUri: "http://localhost:8000",
         },
       });
 
@@ -1142,6 +1148,14 @@ const AppRecruit = () => {
   const toggleSidebar = () => {
     setSidebarVisible(!sidebarVisible);
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ec = params.get("ec");
+    if (ec) {
+      setEcName(ec);
+    }
+  }, []);
 
   // Render function
   return (
@@ -1486,7 +1500,7 @@ const AppRecruit = () => {
         {/* Resume Popup */}
         {showResumePopup && (
           <div id="resume-popup" className="popup">
-            <div className="popup-content">
+            <div className="popup-content" style={{ width: '30%', left: '9%' }}>
               <h2 style={{ color: 'black' }}>Prescreening</h2>
 
               <label htmlFor="hr-email" style={{ color: 'black' }}>HR Email:</label>
@@ -1509,16 +1523,16 @@ const AppRecruit = () => {
                 onChange={addPrefix}
               />
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <label htmlFor="ec-name" style={{ color: 'black', marginRight: '10px' }}>EC Name:</label>
-                <input 
-                  type="text" 
-                  id="ec-name"
-                  style={{ width: '60%', padding: '8px', backgroundColor: '#E6E6FA', textAlign: 'center' }} 
-                  readOnly 
-                  value={ecName}
-                />
-              </div>
+<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '10px' }}>
+              <label htmlFor="ec-name" style={{ color: 'black', marginRight: '10px' }}>EC Name:</label>
+              <input 
+                type="text" 
+                id="ec-name"
+                style={{ width: '60%', padding: '8px', backgroundColor: '#E6E6FA', textAlign: 'center' }} 
+                readOnly 
+                value={ecName}
+              />
+            </div>
 
               <input type="file" id="resume" accept=".pdf,.doc,.docx" />
 
@@ -1567,12 +1581,12 @@ const AppRecruit = () => {
         )}
 
         {/* Evaluation Result Container */}
-        <div className="container">
+        <div className="container" style={{display: 'none',width: '100%',height: 'fit-content'}}> 
           <div className="header">
             <div id="evaluation-result-container" className="cards-container" style={{ marginTop: '55px' }}>
               <h1 style={{ color: '#bb86fc' }}></h1>
             </div>
-            <div id="questions-form-container" className="form-container"></div>
+            {/* <div id="questions-form-container" className="form-container"></div> */}
           </div>
         </div>
       </div>
